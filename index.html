@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PV GYM</title>
+<meta name="theme-color" content="#0F1E2A">
+<meta name="description" content="Registro de pliegues, medidas y composición corporal.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="icons/favicon-48.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF0F2;--paper:#FFFFFF;--ink:#1C232B;--muted:#5E6B78;--line:#D5DBE1;
+  --tape:#F5C518;--tape-ink:#2A2306;--self:#2A64D6;--pro:#9A3B6B;--good:#1E7F4F;--bad:#B23A2E;
+  --cond:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121820;--paper:#1B232D;--ink:#E6EBF0;--muted:#93A1B0;--line:#2C3743;
+  --tape:#E8B90F;--tape-ink:#231C02;--self:#6C9BFF;--pro:#D27AA6;--good:#4CC08A;--bad:#EF7A6C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121820;--paper:#1B232D;--ink:#E6EBF0;--muted:#93A1B0;--line:#2C3743;
+  --tape:#E8B90F;--tape-ink:#231C02;--self:#6C9BFF;--pro:#D27AA6;--good:#4CC08A;--bad:#EF7A6C;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 16px/1.45 var(--body);-webkit-text-size-adjust:100%}
+main{max-width:640px;margin:0 auto;padding:16px 16px 96px}
+h1,h2,h3{font-family:var(--cond);font-weight:700;letter-spacing:.01em;margin:0}
+h1{font-size:28px;line-height:1.1}
+h2{font-size:22px;margin:28px 0 10px}
+h3{font-size:18px}
+p{margin:.4em 0}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--self);outline-offset:2px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.logo{display:flex;align-items:center;gap:10px;font-family:"Big Shoulders Display",var(--cond);margin:0}
+.logo .plate{background:#FFC21A;color:#0F1E2A;font-weight:900;font-size:30px;line-height:1;padding:5px 12px 2px;border-radius:6px;transform:skewX(-12deg);letter-spacing:-1px}
+.logo .gym{font-weight:700;font-size:26px;line-height:1;letter-spacing:6px;transform:skewX(-12deg);color:var(--ink)}
+.status{font-size:13px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:2px 9px;border-radius:999px;border:1.5px solid currentColor}
+.chip.self{color:var(--self)} .chip.pro{color:var(--pro)}
+
+/* hero tape */
+.hero{background:var(--paper);border-radius:14px;padding:16px 16px 14px;border:1px solid var(--line)}
+.hero-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.bignum{font-family:var(--cond);font-weight:700;font-size:64px;line-height:.95;letter-spacing:-.01em}
+.bignum small{font-size:24px;font-weight:600;margin-left:4px}
+.tape{display:block;width:100%;height:auto;margin:10px 0 4px;border-radius:4px}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border-radius:10px;overflow:hidden;margin-top:14px;border:1px solid var(--line)}
+.stat{background:var(--paper);padding:10px 12px}
+.stat .v{font-family:var(--cond);font-size:28px;font-weight:600;line-height:1.05}
+.stat .l{font-size:13px;color:var(--muted)}
+.d{font-size:13px;font-weight:600}
+.d.up{color:var(--bad)} .d.down{color:var(--good)} .d.flat{color:var(--muted)}
+.d.upg{color:var(--good)} .d.downb{color:var(--bad)}
+
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px}
+select.metric{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg)}
+.chart{display:block;width:100%;height:auto;margin-top:10px;touch-action:manipulation}
+.legend{display:flex;gap:14px;font-size:13px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.caption{min-height:22px;font-size:14px;margin-top:4px}
+
+/* fold profile */
+.prof-row{display:grid;grid-template-columns:96px 1fr 56px;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.prof-row:last-child{border-bottom:0}
+.prof-name{font-size:14px}
+.bars{display:flex;flex-direction:column;gap:3px}
+.bar{height:9px;border-radius:2px}
+.bar.prev{background:var(--line)}
+.bar.cur{background:var(--tape)}
+.prof-val{text-align:right;font-family:var(--cond);font-size:17px;font-weight:600;line-height:1.1}
+
+/* form */
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.field label{font-size:14px;color:var(--muted)}
+.inp{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:17px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.site{border-top:1px solid var(--line);padding:12px 0}
+.site-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.site-h .n{font-family:var(--cond);font-size:20px;font-weight:700}
+.site-h .n span{color:var(--muted);font-weight:500;margin-right:6px}
+.site-res{font-family:var(--cond);font-size:22px;font-weight:700}
+.reads{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.reads input{text-align:center}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.warn{font-size:13px;color:var(--bad);margin-top:6px}
+.tag{font-size:12px;font-weight:600;color:var(--pro);border:1px solid currentColor;border-radius:6px;padding:0 6px;margin-left:6px;vertical-align:2px}
+details{border-top:1px solid var(--line);padding:10px 0}
+summary{cursor:pointer;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:10px;padding:12px 18px;font-weight:600;background:var(--ink);color:var(--paper)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.danger{background:var(--bad);color:#fff}
+.btn.block{width:100%}
+.btn.sm{padding:7px 12px;font-size:14px}
+
+/* history */
+.entry{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.entry-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.entry-d{font-family:var(--cond);font-size:20px;font-weight:700}
+.entry-g{display:flex;gap:16px;flex-wrap:wrap;margin-top:6px;font-size:14px}
+.entry-g b{font-family:var(--cond);font-size:18px}
+.entry-a{display:flex;gap:8px;margin-top:10px}
+
+/* guide */
+.guide-step{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.guide-step .num{font-family:var(--cond);font-size:26px;font-weight:700;color:var(--muted);line-height:1}
+ul.tight{margin:.3em 0;padding-left:1.2em}
+ul.tight li{margin:.2em 0}
+
+/* nav */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabs button{background:none;border:0;padding:10px 4px 12px;font-size:13px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px}
+nav.tabs button svg{width:22px;height:22px}
+nav.tabs button[aria-selected="true"]{color:var(--ink)}
+nav.tabs button[aria-selected="true"] svg{color:var(--tape)}
+[hidden]{display:none!important}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:10px;font-size:14px;z-index:9;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <h1 class="logo" aria-label="PV GYM"><span class="plate" aria-hidden="true">PV</span><span class="gym" aria-hidden="true">GYM</span></h1>
+    <span class="status" id="status">Cargando…</span>
+  </div>
+
+  <!-- RESUMEN -->
+  <section id="tab-res">
+    <div class="hero" id="hero"></div>
+    <h2>Evolución</h2>
+    <div class="panel">
+      <select class="metric" id="metric" aria-label="Indicador a graficar"></select>
+      <svg class="chart" id="chart" viewBox="0 0 340 210" role="img" aria-label="Gráfico de evolución"></svg>
+      <div class="legend"><span><i style="background:var(--pro)"></i>Nutricionista</span><span><i style="background:var(--self)"></i>Medición propia</span></div>
+      <div class="caption" id="caption"></div>
+      <p class="small muted" id="metricNote"></p>
+    </div>
+    <h2>Perfil de pliegues</h2>
+    <div class="panel" id="profile"></div>
+  </section>
+
+  <!-- MEDIR -->
+  <section id="tab-med" hidden>
+    <div class="panel">
+      <h3 id="formTitle">Nueva medición</h3>
+      <p class="small muted">Mide en el lado derecho, en este orden. Anota 2 lecturas por sitio; si difieren más de 5 %, agrega una 3ª. La app usa el promedio (2) o la mediana (3).</p>
+      <div class="row2" style="margin-top:12px">
+        <div class="field"><label for="f-date">Fecha</label><input class="inp" type="date" id="f-date"></div>
+        <div class="field"><label for="f-src">Quién midió</label>
+          <select class="inp" id="f-src"><option value="self">Yo / en casa</option><option value="pro">Nutricionista</option></select></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="f-w">Peso (kg)</label><input class="inp" id="f-w" inputmode="decimal" autocomplete="off"></div>
+        <div class="field"><label for="f-h">Talla (cm)</label><input class="inp" id="f-h" inputmode="decimal" autocomplete="off"></div>
+      </div>
+      <div id="sites"></div>
+      <div class="hint" id="sumsLive"></div>
+      <details id="girthBox">
+        <summary>Perímetros con huincha (opcional)</summary>
+        <p class="small muted">Con brazo relajado, muslo medio y pantorrilla se calcula el músculo esquelético.</p>
+        <div id="girths" class="row2" style="margin-top:10px"></div>
+      </details>
+      <div class="field" style="margin-top:8px"><label for="f-note">Nota</label><input class="inp" id="f-note" placeholder="Ej.: en ayunas, después de vacaciones" autocomplete="off"></div>
+      <div style="display:flex;gap:10px">
+        <button class="btn block" id="saveBtn">Guardar medición</button>
+        <button class="btn ghost" id="cancelEdit" hidden>Cancelar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HISTORIAL -->
+  <section id="tab-his" hidden>
+    <div id="hist"></div>
+    <h2>Ajustes</h2>
+    <div class="panel">
+      <div class="row2">
+        <div class="field"><label for="s-birth">Fecha de nacimiento</label><input class="inp" type="date" id="s-birth"></div>
+        <div class="field"><label for="s-sex">Sexo</label><select class="inp" id="s-sex"><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
+      </div>
+      <p class="small muted">Se usan para el cálculo de músculo esquelético.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn ghost sm" id="saveSettings">Guardar ajustes</button>
+        <button class="btn ghost sm" id="exportCsv">Descargar CSV</button>
+        <button class="btn ghost sm" id="backupBtn">Descargar respaldo</button>
+        <label class="btn ghost sm" for="restoreInput">Restaurar respaldo</label>
+        <input type="file" id="restoreInput" accept="application/json,.json" hidden>
+      </div>
+      <p class="small muted" style="margin-top:10px">Tus datos viven solo en este teléfono. Descarga un respaldo de vez en cuando, sobre todo antes de cambiar de teléfono o borrar la app.</p>
+      <div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUÍA -->
+  <section id="tab-gui" hidden>
+    <div class="panel">
+      <h3>Antes de medir</h3>
+      <ul class="tight small">
+        <li>Mide siempre en las mismas condiciones: en la mañana, antes de entrenar o ducharte, con la piel seca.</li>
+        <li>Marca los puntos con lápiz antes de empezar; la mayoría del error viene de medir unos centímetros más arriba o abajo.</li>
+        <li>Toma el pliegue con pulgar e índice, 1 cm por encima de la marca, levantando piel y grasa (no músculo).</li>
+        <li>Pon el caliper perpendicular al pliegue, sobre la marca, suelta el gatillo y lee a los 2 segundos.</li>
+        <li>Recorre los 8 sitios en orden y luego repite la vuelta completa; así el tejido se recupera entre lecturas.</li>
+        <li>Tríceps, subescapular y cresta ilíaca son casi imposibles de medir solo: pide ayuda o déjalos en blanco.</li>
+      </ul>
+    </div>
+    <div class="panel" style="margin-top:12px">
+      <h3>Sitios ISAK, en orden</h3>
+      <div id="guideSites"></div>
+    </div>
+    <div class="panel" style="margin-top:12px">
+      <h3>Cómo leer tus datos</h3>
+      <p class="small">Tus mediciones con un caliper de plástico no van a coincidir con las de tu nutricionista, que usa un caliper de presión constante y está certificado. Por eso la app separa las dos series por color: compara tus mediciones con tus mediciones.</p>
+      <p class="small">El indicador más confiable es la <b>suma de pliegues</b> (Σ6 y Σ8) en milímetros. Los porcentajes y kilos son estimaciones que se apoyan en esa suma.</p>
+      <p class="small">El % de grasa usa la ecuación de Faulkner (4 pliegues), la misma familia que tu informe muestra como masa grasa. La masa adiposa estimada usa la ecuación de Kerr sin el ajuste por diámetros óseos, así que suele salir algo más alta que el informe.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-tab="res" aria-selected="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l5-5 4 3 8-8"/><path d="M3 21h18"/></svg>Resumen</button>
+  <button role="tab" data-tab="med" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="8" width="20" height="8" rx="1"/><path d="M6 8v4M10 8v3M14 8v4M18 8v3"/></svg>Medir</button>
+  <button role="tab" data-tab="his" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Historial</button>
+  <button role="tab" data-tab="gui" aria-selected="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Guía</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+const FOLDS=[
+ {k:"tri",n:"Tríceps",help:1,how:"Cara posterior del brazo, a mitad de camino entre el acromion (punta del hombro) y la cabeza del radio (codo). Pliegue vertical, brazo relajado colgando."},
+ {k:"sub",n:"Subescapular",help:1,how:"2 cm por debajo del ángulo inferior de la escápula. Pliegue oblicuo, hacia abajo y afuera, en unos 45°."},
+ {k:"bic",n:"Bíceps",how:"Cara anterior del brazo, a la misma altura que el tríceps, sobre la parte más abultada del bíceps. Pliegue vertical."},
+ {k:"ili",n:"Cresta ilíaca",help:1,how:"Justo encima del borde del hueso de la cadera, en la línea media del costado (bajo la axila). Pliegue casi horizontal, levemente hacia abajo y adelante. Brazo derecho cruzado sobre el pecho."},
+ {k:"sup",n:"Supraespinal",how:"Donde se cruzan la línea que va de la espina ilíaca anterior (hueso saliente de adelante de la cadera) hacia la axila y la horizontal a la altura de la cresta ilíaca. Pliegue oblicuo hacia abajo y adentro."},
+ {k:"abd",n:"Abdominal",how:"5 cm a la derecha del ombligo. Pliegue vertical. Respira normal y lee al final de una exhalación."},
+ {k:"mus",n:"Muslo anterior",how:"Sentado con la rodilla a 90°, en el punto medio entre el pliegue inguinal y el borde superior de la rótula. Pliegue vertical; si cuesta, levanta el muslo con las manos."},
+ {k:"pan",n:"Pantorrilla medial",how:"Sentado con la rodilla a 90°, cara interna de la pantorrilla donde es más ancha. Pliegue vertical."}
+];
+const S6=["tri","sub","sup","abd","mus","pan"];
+const GIRTHS=[
+ {k:"brazo",n:"Brazo relajado"},{k:"brazoF",n:"Brazo flex. y contraído"},{k:"ante",n:"Antebrazo"},
+ {k:"torax",n:"Tórax"},{k:"cint",n:"Cintura mínima"},{k:"cad",n:"Cadera máxima"},
+ {k:"mus1",n:"Muslo 1 cm glúteo"},{k:"musm",n:"Muslo medio"},{k:"pier",n:"Pantorrilla máx."},{k:"cab",n:"Cabeza"}
+];
+const LS_KEY="pv-gym-v1";
+const SEED=[{"id": "pro-2024-01-17", "date": "2024-01-17", "src": "pro", "weight": 66.3, "height": 164.5, "folds": {}, "reads": {}, "girths": {}, "note": "Fernanda Villalobos", "pro": {"adipKg": 17.595, "adipPct": 26.54, "grasaKg": 11.543, "imo": 5.1426, "muscKg": 31.221, "muscPct": 47.09, "s6": 87}}, {"id": "pro-2025-03-11", "date": "2025-03-11", "src": "pro", "weight": 69.4, "height": 163.4, "folds": {}, "reads": {}, "girths": {}, "note": "Cristián Ramírez", "pro": {"adipKg": 17.918, "adipPct": 25.82, "grasaKg": 11.597, "imo": 5.6239, "muscKg": 34.261, "muscPct": 49.37, "s6": 90}}, {"id": "pro-2025-04-12", "date": "2025-04-12", "src": "pro", "weight": 69.3, "height": 163.4, "folds": {}, "reads": {}, "girths": {}, "note": "Cristián Ramírez", "pro": {"adipKg": 16.719, "adipPct": 24.13, "grasaKg": 10.471, "imo": 5.7345, "muscKg": 35.141, "muscPct": 50.71, "s6": 81}}, {"id": "pro-2025-05-16", "date": "2025-05-16", "src": "pro", "weight": 69.4, "height": 163.4, "folds": {}, "reads": {}, "girths": {}, "note": "Cristián Ramírez", "pro": {"adipKg": 16.114, "adipPct": 23.22, "grasaKg": 9.91, "imo": 5.8431, "muscKg": 35.748, "muscPct": 51.51, "s6": 77}}, {"id": "pro-2025-07-28", "date": "2025-07-28", "src": "pro", "weight": 68.8, "height": 163.4, "folds": {}, "reads": {}, "girths": {}, "note": "Cristián Ramírez", "pro": {"adipKg": 15.867, "adipPct": 23.06, "grasaKg": 9.721, "imo": 5.7727, "muscKg": 35.254, "muscPct": 51.24, "s6": 75.5}}, {"id": "pro-2025-09-15", "date": "2025-09-15", "src": "pro", "weight": 70.2, "height": 163.4, "folds": {}, "reads": {}, "girths": {}, "note": "Cristián Ramírez", "pro": {"adipKg": 15.17, "adipPct": 21.61, "grasaKg": 9.028, "imo": 5.9416, "muscKg": 37.04, "muscPct": 52.76, "s6": 68.5}}, {"id": "pro-2025-10-11", "date": "2025-10-11", "src": "pro", "weight": 70.6, "height": 163.4, "folds": {"abd": 17.5, "bic": 3, "ili": 17.5, "mus": 15, "pan": 7, "sub": 11, "sup": 6.5, "tri": 10.5}, "reads": {}, "girths": {}, "note": "Cristián Ramírez · somatotipo 3-5,9-0,7", "pro": {"adipKg": 14.98, "adipPct": 21.22, "grasaKg": 8.839, "imo": 6.047, "muscKg": 37.594, "muscPct": 53.25, "s6": 67.5}}, {"id": "pro-2025-11-18", "date": "2025-11-18", "src": "pro", "weight": 70.9, "height": 163.4, "folds": {"abd": 16, "bic": 2.5, "ili": 16.5, "mus": 16, "pan": 7.5, "sub": 10, "sup": 6.5, "tri": 9}, "reads": {}, "girths": {"ante": 29.3, "brazo": 33.8, "brazoF": 35.2, "cab": 53.9, "cad": 96, "cint": 81.3, "mus1": 60.1, "musm": 57.8, "pier": 37, "torax": 103.2}, "note": "Cristián Ramírez · somatotipo 2,7-5,9-0,7", "pro": {"adipKg": 14.608, "adipPct": 20.6, "grasaKg": 8.508, "imo": 6.1311, "muscKg": 38.105, "muscPct": 53.74, "s6": 65}}, {"id": "pro-2026-02-13", "date": "2026-02-13", "src": "pro", "weight": 70.7, "height": 163.4, "folds": {"abd": 20, "bic": 2.5, "ili": 22.5, "mus": 20, "pan": 7, "sub": 12, "sup": 8.5, "tri": 11.5}, "reads": {}, "girths": {"ante": 29.2, "brazo": 33.4, "brazoF": 34.7, "cab": 53.9, "cad": 97.4, "cint": 82.7, "mus1": 60.3, "musm": 58.2, "pier": 36.8, "torax": 104}, "note": "Cristián Ramírez · somatotipo 3,4-5,7-0,7", "pro": {"adipKg": 16.315, "adipPct": 23.08, "grasaKg": 10.004, "imo": 6.0084, "muscKg": 36.561, "muscPct": 51.71, "s6": 79}}];
+const SEED_SETTINGS={birth:"1994-02-15",sex:"M"};
+let items=[], settings={birth:"",sex:"M"}, mode="local", coll=null, downloads=null, editingId=null;
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const num=v=>{if(v===null||v===undefined||v==="")return null;const n=parseFloat(String(v).replace(",","."));return isFinite(n)?n:null};
+const fmt=(v,d=1)=>v==null?"–":v.toLocaleString("es-CL",{minimumFractionDigits:d,maximumFractionDigits:d});
+const pd=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const fdate=s=>pd(s).toLocaleDateString("es-CL",{day:"numeric",month:"short",year:"numeric"});
+const todayISO=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("on"),2200)}
+const sorted=()=>items.slice().sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+
+/* ---------- cálculos ---------- */
+function ageAt(date){
+  if(!settings.birth)return null;
+  return (pd(date)-pd(settings.birth))/(365.25*864e5);
+}
+function calc(e){
+  const F=e.folds||{}, G=e.girths||{}, P=e.pro||{};
+  const w=num(e.weight), h=num(e.height);
+  const has=ks=>ks.every(k=>num(F[k])>0);
+  const r={w,h};
+  r.s6=has(S6)?S6.reduce((s,k)=>s+num(F[k]),0):num(P.s6);
+  r.s8=(has(S6)&&has(["bic","ili"]))?r.s6+num(F.bic)+num(F.ili):null;
+  if(has(["tri","sub","sup","abd"])){
+    r.fat=0.153*(num(F.tri)+num(F.sub)+num(F.sup)+num(F.abd))+5.783;
+    if(w) r.fatKg=r.fat*w/100;
+  }else if(num(P.grasaKg)!=null){r.fatKg=num(P.grasaKg); if(w) r.fat=r.fatKg/w*100}
+  if(has(S6)&&h){const q=170.18/h;const z=(r.s6*q-116.41)/34.79;r.adipEst=(z*5.85+25.6)/Math.pow(q,3)}
+  r.adipRep=num(P.adipKg); r.adipPctRep=num(P.adipPct);
+  r.muscRep=num(P.muscKg); r.muscPctRep=num(P.muscPct); r.imo=num(P.imo);
+  const age=ageAt(e.date);
+  if(h&&age!=null&&num(G.brazo)&&num(G.musm)&&num(G.pier)&&has(["tri","mus","pan"])){
+    const cag=num(G.brazo)-Math.PI*num(F.tri)/10, ctg=num(G.musm)-Math.PI*num(F.mus)/10, ccg=num(G.pier)-Math.PI*num(F.pan)/10;
+    r.lee=(h/100)*(0.00744*cag*cag+0.00088*ctg*ctg+0.00441*ccg*ccg)+2.4*(settings.sex==="M"?1:0)-0.048*age+7.8;
+  }
+  r.cint=num(G.cint);
+  return r;
+}
+const METRICS=[
+ {k:"s8",n:"Suma 8 pliegues (mm)",u:"mm",d:0,note:"El indicador más directo de cambio en grasa subcutánea."},
+ {k:"s6",n:"Suma 6 pliegues (mm)",u:"mm",d:1,note:"Tríceps, subescapular, supraespinal, abdominal, muslo y pantorrilla. Es la que usa tu informe."},
+ {k:"w",n:"Peso (kg)",u:"kg",d:1},
+ {k:"fat",n:"% grasa (Faulkner)",u:"%",d:1,note:"Estimación desde 4 pliegues. En los informes antiguos se deriva de la masa grasa reportada."},
+ {k:"fatKg",n:"Masa grasa (kg)",u:"kg",d:2},
+ {k:"adipRep",n:"Masa adiposa del informe (kg)",u:"kg",d:2,note:"Solo existe en las evaluaciones de tu nutricionista (modelo de 5 componentes)."},
+ {k:"adipEst",n:"Masa adiposa estimada (kg)",u:"kg",d:2,note:"Ecuación de Kerr sin ajuste óseo: compárala contigo mismo, no con el informe."},
+ {k:"muscRep",n:"Masa muscular del informe (kg)",u:"kg",d:2,note:"Solo existe en las evaluaciones de tu nutricionista."},
+ {k:"lee",n:"Músculo esquelético estimado (kg)",u:"kg",d:1,note:"Ecuación de Lee con perímetros corregidos. Mide otra cosa que la masa muscular del informe; mira la tendencia."},
+ {k:"cint",n:"Cintura (cm)",u:"cm",d:1}
+].concat(FOLDS.map(f=>({k:"f:"+f.k,n:"Pliegue "+f.n.toLowerCase()+" (mm)",u:"mm",d:1})));
+function metricVal(e,k){
+  if(k.startsWith("f:")){return num((e.folds||{})[k.slice(2)])}
+  return calc(e)[k]??null;
+}
+
+/* ---------- storage ---------- */
+function loadLocal(){let raw=null;try{raw=localStorage.getItem(LS_KEY)}catch(e){}
+  if(raw===null){items=JSON.parse(JSON.stringify(SEED));settings=Object.assign({},SEED_SETTINGS);saveLocal();return}
+  try{const j=JSON.parse(raw);items=j.items||[];if(j.settings)settings=Object.assign(settings,j.settings)}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify({items,settings}))}catch(e){}}
+async function persistEntry(e){
+  if(mode==="db"){await coll.doc(e.id).set(Object.assign({kind:"m"},e));}
+  else{const i=items.findIndex(x=>x.id===e.id);if(i>=0)items[i]=e;else items.push(e);saveLocal();renderAll()}
+}
+async function removeEntry(id){
+  if(mode==="db"){await coll.doc(id).delete()}
+  else{items=items.filter(x=>x.id!==id);saveLocal();renderAll()}
+}
+async function persistSettings(){
+  if(mode==="db"){await coll.doc("settings").set(Object.assign({kind:"settings"},settings))}
+  else saveLocal();
+}
+function setStatus(){$("#status").textContent=mode==="db"?"Guardado en tu cuenta":"Guardado en este teléfono"}
+async function initDb(){
+  try{
+    if(!window.claude||!window.claude.use)return;
+    const [db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    if(!db||!user)return;
+    const uid=await user.id(); if(!uid)return;
+    coll=db.collection("data/users/"+uid);
+    coll.onSnapshot(snap=>{
+      mode="db";
+      const docs=snap.docs.map(d=>Object.assign({id:d.id},d.data()));
+      items=docs.filter(d=>d.kind==="m");
+      const s=docs.find(d=>d.kind==="settings"); if(s)settings={birth:s.birth||"",sex:s.sex||"M"};
+      setStatus();renderAll();
+    },err=>{console.warn(err);toast("No se pudo sincronizar: "+err.code)});
+    window.claude.use("downloads").then(d=>{downloads=d;$("#exportCsv").hidden=!d}).catch(()=>{});
+  }catch(e){console.warn(e)}
+}
+
+/* ---------- render: hero ---------- */
+function deltaHtml(cur,prev,d,goodDown=true,unit=""){
+  if(cur==null||prev==null)return "";
+  const df=cur-prev; const s=Math.abs(df)<Math.pow(10,-d)/2?"flat":(df>0?(goodDown?"up":"upg"):(goodDown?"down":"downb"));
+  return `<span class="d ${s}">${df>0?"+":df<0?"−":"±"}${fmt(Math.abs(df),d)}${unit}</span>`;
+}
+function tapeSvg(val,prev,label){
+  const W=340,H=58,max=Math.max(120,Math.ceil(((val||0)+20)/10)*10),x=v=>8+(W-16)*v/max;
+  let t=`<svg class="tape" viewBox="0 0 ${W} ${H}" aria-label="${esc(label)}: ${fmt(val,1)} mm"><rect x="0" y="0" width="${W}" height="${H}" rx="4" fill="var(--tape)"/>`;
+  if(val!=null)t+=`<rect x="${x(val)}" y="0" width="${W-x(val)}" height="${H}" fill="var(--paper)" opacity=".55"/>`;
+  for(let m=0;m<=max;m+=2){const X=x(m);const big=m%10===0,mid=m%10===5||m%10===0;
+    t+=`<line x1="${X}" y1="0" x2="${X}" y2="${big?20:mid?14:8}" stroke="var(--tape-ink)" stroke-width="${big?1.4:.8}"/>`;
+    if(big)t+=`<text x="${X}" y="32" font-family="Barlow Condensed,Arial Narrow,sans-serif" font-size="11" font-weight="600" fill="var(--tape-ink)" text-anchor="middle">${m}</text>`;}
+  if(prev!=null)t+=`<path d="M${x(prev)} ${H}l-5 -8h10z" fill="var(--tape-ink)" opacity=".35"/>`;
+  if(val!=null)t+=`<line x1="${x(val)}" y1="0" x2="${x(val)}" y2="${H}" stroke="var(--bad)" stroke-width="2.5"/><path d="M${x(val)} ${H}l-6 -10h12z" fill="var(--bad)"/>`;
+  return t+"</svg>";
+}
+function renderHero(){
+  const el=$("#hero"); const all=sorted();
+  if(!all.length){el.innerHTML=`<h3>Aún no hay mediciones</h3><p class="muted">Registra la primera en la pestaña Medir.</p><button class="btn" data-go="med">Registrar medición</button>`;return}
+  const last=all[all.length-1], c=calc(last);
+  const prevSame=all.slice(0,-1).filter(e=>e.src===last.src).pop(), p=prevSame?calc(prevSame):{};
+  const useS8=c.s8!=null, val=useS8?c.s8:c.s6, pv=useS8?p.s8:p.s6, lab=useS8?"Suma 8 pliegues":"Suma 6 pliegues";
+  el.innerHTML=`<div class="hero-head"><div><div class="muted small">${lab}</div>
+    <div class="bignum">${fmt(val,useS8?0:1)}<small>mm</small></div></div>
+    <div style="text-align:right"><span class="chip ${last.src}">${last.src==="pro"?"Nutricionista":"Medición propia"}</span>
+    <div class="small muted" style="margin-top:4px">${fdate(last.date)}</div>
+    <div>${deltaHtml(val,pv,useS8?0:1,true," mm")}</div></div></div>
+    ${tapeSvg(val,pv,lab)}
+    <div class="small muted">${prevSame?"Marca gris: "+fdate(prevSame.date)+" ("+(last.src==="pro"?"nutricionista":"propia")+")":(last.src==="self"?"Primera medición propia: la próxima se comparará con esta.":"")}</div>
+    <div class="stats">
+      <div class="stat"><div class="l">Peso</div><div class="v">${fmt(c.w,1)} kg</div>${deltaHtml(c.w,p.w,1,true," kg")}</div>
+      <div class="stat"><div class="l">${useS8?"Suma 6 pliegues":"Masa grasa"}</div><div class="v">${useS8?fmt(c.s6,1)+" mm":fmt(c.fatKg,1)+" kg"}</div>${useS8?deltaHtml(c.s6,p.s6,1,true," mm"):deltaHtml(c.fatKg,p.fatKg,1,true," kg")}</div>
+      <div class="stat"><div class="l">% grasa (Faulkner)</div><div class="v">${fmt(c.fat,1)} %</div>${deltaHtml(c.fat,p.fat,1,true," pts")}</div>
+      <div class="stat"><div class="l">${c.muscRep!=null?"Masa muscular (informe)":c.lee!=null?"Músculo esquelético est.":"Cintura"}</div>
+        <div class="v">${c.muscRep!=null?fmt(c.muscRep,1)+" kg":c.lee!=null?fmt(c.lee,1)+" kg":fmt(c.cint,1)+" cm"}</div>
+        ${c.muscRep!=null?deltaHtml(c.muscRep,p.muscRep,1,false," kg"):c.lee!=null?deltaHtml(c.lee,p.lee,1,false," kg"):deltaHtml(c.cint,p.cint,1,true," cm")}</div>
+    </div>`;
+}
+
+/* ---------- render: chart ---------- */
+let chartPts=[];
+function renderChart(){
+  const k=$("#metric").value, m=METRICS.find(x=>x.k===k);
+  $("#metricNote").textContent=m.note||"";
+  const pts=sorted().map(e=>({e,v:metricVal(e,k)})).filter(p=>p.v!=null);
+  const svg=$("#chart"); $("#caption").textContent="";
+  if(pts.length===0){svg.innerHTML=`<text x="170" y="105" text-anchor="middle" fill="var(--muted)" font-size="14">Sin datos para este indicador</text>`;return}
+  const W=340,H=210,L=40,R=14,T=16,B=30;
+  const t0=pd(pts[0].e.date).getTime(), t1=pd(pts[pts.length-1].e.date).getTime();
+  let lo=Math.min(...pts.map(p=>p.v)), hi=Math.max(...pts.map(p=>p.v));
+  const pad=(hi-lo)*0.15||Math.max(1,Math.abs(hi)*0.05); lo-=pad; hi+=pad;
+  const X=t=>t1===t0?(L+W-R)/2:L+(W-L-R)*(t-t0)/(t1-t0), Y=v=>T+(H-T-B)*(1-(v-lo)/(hi-lo));
+  let s="";
+  for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=Y(v);
+    s+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${L-6}" y="${y+4}" text-anchor="end" font-size="11" fill="var(--muted)">${fmt(v,m.d>1?1:m.d)}</text>`}
+  const yrs=new Set(pts.map(p=>p.e.date.slice(0,4)));
+  [...yrs].forEach(yy=>{const tt=new Date(+yy,0,1).getTime();if(tt>=t0&&tt<=t1){s+=`<text x="${X(tt)}" y="${H-10}" text-anchor="middle" font-size="11" fill="var(--muted)">${yy}</text><line x1="${X(tt)}" x2="${X(tt)}" y1="${T}" y2="${H-B}" stroke="var(--line)" stroke-dasharray="3 3"/>`}});
+  if(yrs.size===1||t0===t1){s+=`<text x="${L}" y="${H-10}" font-size="11" fill="var(--muted)">${fdate(pts[0].e.date)}</text>`}
+  chartPts=[];
+  ["pro","self"].forEach(src=>{
+    const ps=pts.filter(p=>p.e.src===src); if(!ps.length)return;
+    const col=src==="pro"?"var(--pro)":"var(--self)";
+    if(ps.length>1)s+=`<polyline fill="none" stroke="${col}" stroke-width="2.2" stroke-linejoin="round" points="${ps.map(p=>X(pd(p.e.date).getTime())+","+Y(p.v)).join(" ")}"/>`;
+    ps.forEach(p=>{const cx=X(pd(p.e.date).getTime()),cy=Y(p.v);chartPts.push({cx,cy,p,m});
+      s+=src==="pro"?`<circle cx="${cx}" cy="${cy}" r="4.5" fill="var(--paper)" stroke="${col}" stroke-width="2.2"/>`:`<rect x="${cx-4.5}" y="${cy-4.5}" width="9" height="9" fill="${col}"/>`});
+    const lp=ps[ps.length-1];s+=`<text x="${Math.min(X(pd(lp.e.date).getTime()),W-R-2)}" y="${Y(lp.v)-9}" text-anchor="end" font-size="12" font-weight="600" fill="${col}">${fmt(lp.v,m.d)}</text>`;
+  });
+  s+=`<rect id="hit" x="${L}" y="0" width="${W-L-R}" height="${H}" fill="transparent"/><g id="sel"></g>`;
+  svg.innerHTML=s;
+  const last=pts[pts.length-1]; showPoint(chartPts.find(c=>c.p===last));
+}
+function showPoint(c){
+  if(!c)return;
+  $("#sel").innerHTML=`<circle cx="${c.cx}" cy="${c.cy}" r="9" fill="none" stroke="var(--ink)" stroke-width="1.5"/>`;
+  $("#caption").innerHTML=`<b>${fmt(c.p.v,c.m.d)} ${c.m.u}</b> <span class="muted">· ${fdate(c.p.e.date)} · ${c.p.e.src==="pro"?"nutricionista":"propia"}</span>`;
+}
+$("#chart").addEventListener("click",ev=>{
+  const svg=$("#chart"),r=svg.getBoundingClientRect(),x=(ev.clientX-r.left)*340/r.width,y=(ev.clientY-r.top)*210/r.height;
+  let best=null,bd=1e9;chartPts.forEach(c=>{const d=Math.hypot(c.cx-x,(c.cy-y)*.6);if(d<bd){bd=d;best=c}});showPoint(best);
+});
+
+/* ---------- render: profile ---------- */
+function renderProfile(){
+  const wf=sorted().filter(e=>FOLDS.some(f=>num((e.folds||{})[f.k])!=null));
+  const el=$("#profile");
+  if(!wf.length){el.innerHTML=`<p class="muted small">Aparecerá cuando registres pliegues.</p>`;return}
+  const cur=wf[wf.length-1], prev=wf[wf.length-2];
+  const max=Math.max(25,...wf.slice(-2).flatMap(e=>FOLDS.map(f=>num(e.folds[f.k])||0)));
+  el.innerHTML=`<p class="small muted" style="margin:0 0 6px"><span style="color:var(--ink);font-weight:600">${fdate(cur.date)}</span>${prev?" comparado con "+fdate(prev.date):""}${prev&&prev.src!==cur.src?" (otra persona midió: compara con cautela)":""}</p>`+
+  FOLDS.map(f=>{const a=num(cur.folds[f.k]),b=prev?num(prev.folds[f.k]):null;
+    return `<div class="prof-row"><div class="prof-name">${f.n}</div><div class="bars">
+      ${b!=null?`<div class="bar prev" style="width:${b/max*100}%"></div>`:""}
+      <div class="bar cur" style="width:${(a||0)/max*100}%"></div></div>
+      <div class="prof-val">${fmt(a,1)}<br>${deltaHtml(a,b,1,true)}</div></div>`}).join("");
+}
+
+/* ---------- render: history ---------- */
+let pendingDel=null;
+function renderHist(){
+  const el=$("#hist"),all=sorted().reverse();
+  if(!all.length){el.innerHTML=`<p class="muted">Todavía no hay registros.</p>`;return}
+  el.innerHTML=all.map(e=>{const c=calc(e);
+    return `<div class="entry"><div class="entry-h"><span class="entry-d">${fdate(e.date)}</span><span class="chip ${e.src}">${e.src==="pro"?"Nutricionista":"Propia"}</span></div>
+    <div class="entry-g"><span>Peso <b>${fmt(c.w,1)}</b></span><span>Σ6 <b>${fmt(c.s6,1)}</b></span><span>Σ8 <b>${fmt(c.s8,1)}</b></span>${c.adipRep!=null?`<span>Adiposa <b>${fmt(c.adipRep,1)}</b> kg</span>`:""}${c.muscRep!=null?`<span>Muscular <b>${fmt(c.muscRep,1)}</b> kg</span>`:""}</div>
+    ${e.note?`<div class="small muted" style="margin-top:4px">${esc(e.note)}</div>`:""}
+    <div class="entry-a"><button class="btn ghost sm" data-edit="${esc(e.id)}">Editar</button>
+    ${pendingDel===e.id?`<button class="btn danger sm" data-del-ok="${esc(e.id)}">Sí, borrar</button><button class="btn ghost sm" data-del-no>No</button>`:`<button class="btn ghost sm" data-del="${esc(e.id)}">Borrar</button>`}</div></div>`}).join("");
+}
+$("#hist").addEventListener("click",async ev=>{
+  const b=ev.target.closest("button");if(!b)return;
+  if(b.dataset.edit){loadForm(items.find(x=>x.id===b.dataset.edit));go("med")}
+  else if(b.dataset.del){pendingDel=b.dataset.del;renderHist()}
+  else if(b.hasAttribute("data-del-no")){pendingDel=null;renderHist()}
+  else if(b.dataset.delOk){const id=b.dataset.delOk;pendingDel=null;try{await removeEntry(id);toast("Medición borrada")}catch(e){toast("No se pudo borrar: "+(e.code||e.message))}}
+});
+
+/* ---------- form ---------- */
+function buildForm(){
+  $("#sites").innerHTML=FOLDS.map((f,i)=>`<div class="site" data-k="${f.k}"><div class="site-h"><div class="n"><span>${i+1}</span>${f.n}${f.help?'<span class="tag">con ayuda</span>':""}</div><div class="site-res" id="res-${f.k}">–</div></div>
+   <div class="reads">${[1,2,3].map(j=>`<input class="inp" inputmode="decimal" autocomplete="off" aria-label="${f.n}, lectura ${j}" placeholder="${j===3?"3ª opc.":j+"ª"}" id="r-${f.k}-${j}">`).join("")}</div><div id="w-${f.k}"></div></div>`).join("");
+  $("#girths").innerHTML=GIRTHS.map(g=>`<div class="field"><label for="g-${g.k}">${g.n} (cm)</label><input class="inp" inputmode="decimal" autocomplete="off" id="g-${g.k}"></div>`).join("");
+  $("#guideSites").innerHTML=FOLDS.map((f,i)=>`<div class="guide-step"><div class="num">${i+1}</div><div><b>${f.n}</b>${f.help?'<span class="tag">con ayuda</span>':""}<p class="small">${f.how}</p></div></div>`).join("");
+  $("#sites").addEventListener("input",updateLive);
+}
+function foldValue(k){
+  const r=[1,2,3].map(j=>num($(`#r-${k}-${j}`).value)).filter(v=>v!=null&&v>0);
+  if(!r.length)return {v:null,r};
+  if(r.length===1)return {v:r[0],r};
+  if(r.length===2){const diff=Math.abs(r[0]-r[1])/Math.min(r[0],r[1]);return {v:(r[0]+r[1])/2,r,warn:diff>0.05}}
+  const s=r.slice().sort((a,b)=>a-b);return {v:s[1],r};
+}
+function updateLive(){
+  const vals={};
+  FOLDS.forEach(f=>{const o=foldValue(f.k);vals[f.k]=o.v;$("#res-"+f.k).textContent=o.v==null?"–":fmt(o.v,1)+" mm";
+    $("#w-"+f.k).innerHTML=o.warn?`<div class="warn">Las lecturas difieren más de 5 %: toma una 3ª.</div>`:""});
+  const s6=S6.every(k=>vals[k]!=null)?S6.reduce((a,k)=>a+vals[k],0):null;
+  const s8=s6!=null&&vals.bic!=null&&vals.ili!=null?s6+vals.bic+vals.ili:null;
+  $("#sumsLive").innerHTML=`Σ6: <b>${fmt(s6,1)}</b> mm · Σ8: <b>${fmt(s8,1)}</b> mm`;
+}
+function resetForm(){
+  editingId=null;$("#formTitle").textContent="Nueva medición";$("#cancelEdit").hidden=true;$("#saveBtn").textContent="Guardar medición";
+  $("#f-date").value=todayISO();$("#f-src").value="self";$("#f-note").value="";
+  const last=sorted().pop();$("#f-w").value="";$("#f-h").value=last&&last.height?String(last.height).replace(".",","):"";
+  FOLDS.forEach(f=>[1,2,3].forEach(j=>$(`#r-${f.k}-${j}`).value=""));
+  GIRTHS.forEach(g=>$("#g-"+g.k).value="");updateLive();
+}
+const show=v=>v==null?"":String(v).replace(".",",");
+function loadForm(e){
+  editingId=e.id;$("#formTitle").textContent="Editar medición";$("#cancelEdit").hidden=false;$("#saveBtn").textContent="Guardar cambios";
+  $("#f-date").value=e.date;$("#f-src").value=e.src;$("#f-note").value=e.note||"";$("#f-w").value=show(e.weight);$("#f-h").value=show(e.height);
+  FOLDS.forEach(f=>{const rr=(e.reads&&e.reads[f.k])||((e.folds||{})[f.k]!=null?[e.folds[f.k]]:[]);[1,2,3].forEach(j=>$(`#r-${f.k}-${j}`).value=show(rr[j-1]))});
+  GIRTHS.forEach(g=>$("#g-"+g.k).value=show((e.girths||{})[g.k]));
+  $("#girthBox").open=GIRTHS.some(g=>(e.girths||{})[g.k]!=null);updateLive();
+}
+$("#cancelEdit").addEventListener("click",()=>{resetForm();go("his")});
+$("#saveBtn").addEventListener("click",async()=>{
+  const date=$("#f-date").value; if(!date){toast("Falta la fecha");return}
+  const folds={},reads={},girths={};
+  FOLDS.forEach(f=>{const o=foldValue(f.k);if(o.v!=null){folds[f.k]=Math.round(o.v*100)/100;reads[f.k]=o.r}});
+  GIRTHS.forEach(g=>{const v=num($("#g-"+g.k).value);if(v!=null)girths[g.k]=v});
+  const w=num($("#f-w").value),h=num($("#f-h").value);
+  if(w==null&&!Object.keys(folds).length&&!Object.keys(girths).length){toast("Ingresa al menos el peso o un pliegue");return}
+  const prev=editingId?items.find(x=>x.id===editingId):null;
+  const e={id:editingId||("m-"+date+"-"+Math.random().toString(36).slice(2,7)),date,src:$("#f-src").value,weight:w,height:h,folds,reads,girths,note:$("#f-note").value.trim()};
+  if(prev&&prev.pro)e.pro=prev.pro;
+  const btn=$("#saveBtn");btn.disabled=true;
+  try{await persistEntry(e);toast(editingId?"Cambios guardados":"Medición guardada");resetForm();go("res")}
+  catch(err){toast(err.code==="quota_exceeded"?"No queda espacio para más registros":"No se pudo guardar: "+(err.code||err.message))}
+  finally{btn.disabled=false}
+});
+
+/* ---------- settings / export ---------- */
+function saveFile(name,data,type){
+  const blob=new Blob([data],{type});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+}
+$("#backupBtn").addEventListener("click",()=>{
+  saveFile("pv-gym-respaldo-"+todayISO()+".json",JSON.stringify({app:"pv-gym",v:1,items,settings},null,1),"application/json");
+  toast("Respaldo descargado");
+});
+$("#restoreInput").addEventListener("change",async ev=>{
+  const f=ev.target.files[0];if(!f)return;
+  try{const j=JSON.parse(await f.text());if(j.app!=="pv-gym"||!Array.isArray(j.items))throw new Error("formato");
+    items=j.items;if(j.settings)settings=j.settings;saveLocal();renderAll();toast("Respaldo restaurado: "+items.length+" mediciones")}
+  catch(e){toast("Ese archivo no es un respaldo de PV GYM")}
+  ev.target.value="";
+});
+$("#saveSettings").addEventListener("click",async()=>{
+  settings={birth:$("#s-birth").value,sex:$("#s-sex").value};
+  try{await persistSettings();toast("Ajustes guardados");renderAll()}catch(e){toast("No se pudo guardar: "+(e.code||e.message))}
+});
+$("#exportCsv").addEventListener("click",async()=>{
+  const head=["fecha","fuente","peso","talla",...FOLDS.map(f=>f.k),"suma6","suma8","pct_grasa_faulkner","adiposa_informe","muscular_informe",...GIRTHS.map(g=>g.k),"nota"];
+  const rows=sorted().map(e=>{const c=calc(e);return [e.date,e.src,e.weight,e.height,...FOLDS.map(f=>(e.folds||{})[f.k]),c.s6,c.s8,c.fat&&+c.fat.toFixed(2),c.adipRep,c.muscRep,...GIRTHS.map(g=>(e.girths||{})[g.k]),'"'+(e.note||"").replace(/"/g,'""')+'"'].map(v=>v==null?"":v).join(";")});
+  saveFile("pv-gym.csv","\ufeff"+[head.join(";"),...rows].join("\n"),"text/csv");
+});
+
+/* ---------- nav ---------- */
+function go(t){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t?"true":"false"));
+  ["res","med","his","gui"].forEach(x=>$("#tab-"+x).hidden=x!==t);
+  window.scrollTo(0,0);
+}
+document.querySelector("nav.tabs").addEventListener("click",ev=>{const b=ev.target.closest("button");if(b)go(b.dataset.tab)});
+document.addEventListener("click",ev=>{const b=ev.target.closest("[data-go]");if(b)go(b.dataset.go)});
+
+function renderAll(){
+  renderHero();renderChart();renderProfile();renderHist();
+  $("#s-birth").value=settings.birth||"";$("#s-sex").value=settings.sex||"M";
+  if(!editingId&&!$("#f-h").value){const last=sorted().pop();if(last&&last.height)$("#f-h").value=show(last.height)}
+}
+
+/* ---------- init ---------- */
+$("#metric").innerHTML=METRICS.map(m=>`<option value="${m.k}">${m.n}</option>`).join("");
+$("#metric").addEventListener("change",renderChart);
+buildForm();loadLocal();setStatus();resetForm();renderAll();
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+})();
+</script>
+</body>
+</html>
