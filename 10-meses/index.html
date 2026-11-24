@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Para Camila 🤍</title>
+<meta name="robots" content="noindex, nofollow, noimageindex">
+<meta name="theme-color" content="#F4ECDF">
+<meta name="description" content="10 meses contigo.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9D%A4%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="fotos/luces.webp">
+<style>
+:root{
+  --paper:#F4ECDF; --paper-2:#EFE4D2; --card:#FFFDF8; --ink:#3A2E28; --muted:#7C6A5E;
+  --red:#B3202E; --red-soft:#D9545F; --gold:#B88A4A;
+  --serif:"Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --hand:"Caveat", "Segoe Print", cursive;
+  color-scheme: light;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:400 21px/1.55 var(--serif);
+  background-image:
+    radial-gradient(1200px 600px at 50% -10%, #FBF6EE 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  overflow-x:hidden;
+}
+body.locked{overflow:hidden;height:100svh}
+img{display:block;max-width:100%}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px}
+.hand{font-family:var(--hand)}
+.center{text-align:center}
+
+/* ---------- Sobre de entrada ---------- */
+#sobre{
+  position:fixed; inset:0; z-index:50; display:grid; place-items:center;
+  background:var(--paper); transition:opacity 1s ease .9s, visibility 0s linear 1.9s;
+  padding:24px 16px calc(24px + env(safe-area-inset-bottom));
+}
+#sobre.abierto{opacity:0;visibility:hidden}
+.sobre-box{display:flex;flex-direction:column;align-items:center;gap:22px}
+.para{font:700 46px/1 var(--hand);color:var(--ink);margin:0;opacity:0;animation:sube 1s ease .2s forwards}
+.envelope{
+  position:relative; width:min(78vw,320px); aspect-ratio:1.45; perspective:900px;
+  opacity:0; animation:sube 1s ease .5s forwards;
+}
+.env-back{position:absolute;inset:0;background:#E6D6BE;border-radius:6px;box-shadow:0 18px 40px -18px rgba(70,45,25,.45)}
+.env-letter{
+  position:absolute; left:7%; right:7%; top:10%; bottom:8%; background:var(--card); border-radius:3px;
+  display:grid;place-items:center; font:600 26px var(--hand); color:var(--red);
+  transition:transform .9s cubic-bezier(.2,.8,.2,1) .35s;
+}
+.env-front{
+  position:absolute; inset:0; border-radius:6px;
+  background:
+    linear-gradient(to top right, #E9DAC3 49.6%, transparent 50%) left/50.2% 100% no-repeat,
+    linear-gradient(to top left,  #E9DAC3 49.6%, transparent 50%) right/50.2% 100% no-repeat;
+}
+.env-flap{
+  position:absolute; left:0; right:0; top:0; height:58%;
+  background:#DFCDB1; clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top; transition:transform .7s ease; z-index:2;
+}
+.seal{
+  position:absolute; left:50%; top:58%; z-index:3; width:64px; height:64px; margin:-32px 0 0 -32px;
+  border:0; border-radius:50%; cursor:pointer; background:radial-gradient(circle at 35% 30%, #D2414E, var(--red) 55%, #7E1420);
+  box-shadow:0 4px 10px rgba(90,10,20,.4), inset 0 -3px 6px rgba(0,0,0,.25);
+  display:grid; place-items:center; color:#FBE3E3; font-size:28px;
+  animation:latido 1.6s ease-in-out infinite; transition:transform .4s, opacity .4s;
+}
+.seal:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.tap{font:500 24px var(--hand);color:var(--muted);margin:0;opacity:0;animation:sube 1s ease 1s forwards}
+#sobre.abierto .env-flap{transform:rotateX(180deg)}
+#sobre.abierto .seal{transform:scale(0);opacity:0}
+#sobre.abierto .env-letter{transform:translateY(-55%)}
+@keyframes latido{0%,100%{transform:scale(1)}15%{transform:scale(1.12)}30%{transform:scale(1)}45%{transform:scale(1.08)}}
+@keyframes sube{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- Portada ---------- */
+header.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:56px 0 40px;text-align:center}
+.kicker{font:500 15px var(--serif);letter-spacing:.32em;text-transform:uppercase;color:var(--muted);margin:0 0 6px}
+h1{font:500 clamp(44px,13vw,64px)/1 var(--serif);margin:0;letter-spacing:-.01em}
+h1 em{font-style:italic;color:var(--red)}
+.fecha{display:flex;justify-content:center;gap:.06em;font:italic 500 clamp(40px,12vw,58px)/1 var(--serif);margin:22px 0 30px;color:var(--ink)}
+.fecha span{display:inline-block;opacity:0;filter:blur(10px);transform:translateY(8px)}
+.fecha .dot{color:var(--red);margin:0 .12em}
+.go .fecha span{animation:nitido .9s ease forwards}
+@keyframes nitido{to{opacity:1;filter:blur(0);transform:none}}
+
+.polaroid{
+  background:var(--card); padding:12px 12px 0; border-radius:2px;
+  box-shadow:0 1px 2px rgba(60,40,20,.12), 0 18px 36px -16px rgba(60,40,20,.45);
+  width:min(84vw,360px); margin:0 auto; cursor:zoom-in; position:relative;
+}
+.polaroid img{width:100%;height:auto;background:#E8DED0;aspect-ratio:var(--ar,3/4);object-fit:cover}
+.polaroid figcaption{font:500 27px/1.15 var(--hand);text-align:center;padding:14px 8px 16px;color:var(--ink)}
+.polaroid.tape::before{
+  content:""; position:absolute; top:-12px; left:50%; width:96px; height:26px; margin-left:-48px;
+  background:rgba(232,214,180,.78); transform:rotate(-3deg); box-shadow:0 1px 2px rgba(0,0,0,.08);
+}
+.hero .polaroid{transform:rotate(-2deg) translateY(30px);opacity:0;transition:transform 1.2s cubic-bezier(.2,.8,.2,1) .9s, opacity 1s ease .9s}
+.go .hero .polaroid{transform:rotate(-2deg);opacity:1}
+.nombres{font:500 34px var(--serif)!important}
+.nombres b{color:var(--red);font-weight:500;font-style:italic}
+.desliza{margin-top:34px;font:500 22px var(--hand);color:var(--muted);opacity:0;transition:opacity 1s 2.2s}
+.go .desliza{opacity:1}
+.desliza i{display:block;font-style:normal;animation:bota 1.8s ease-in-out infinite}
+@keyframes bota{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+/* ---------- Revelado al deslizar ---------- */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.15s}.rv.d2{transition-delay:.3s}.rv.d3{transition-delay:.45s}.rv.d4{transition-delay:.6s}
+
+section{padding:72px 0}
+h2{font:700 44px/1.05 var(--hand);text-align:center;margin:0 0 26px;color:var(--ink)}
+h2 small{display:block;font:500 15px var(--serif);letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+
+/* Hilo rojo: texto */
+.leyenda p{text-align:center;margin:0 0 14px}
+.leyenda .it{font-style:italic;color:var(--muted)}
+.leyenda .fuerte{font:italic 500 28px/1.3 var(--serif);color:var(--red);margin-top:22px}
+
+/* Hilo separador */
+.hilo{display:block;width:180px;height:60px;margin:6px auto;overflow:visible}
+.hilo path,.venn path,.venn ellipse{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 2.2s ease}
+.in .draw,.draw.in{stroke-dashoffset:0}
+
+/* Venn */
+.venn{display:block;width:min(88vw,380px);height:auto;margin:0 auto;overflow:visible}
+.venn text{font-family:var(--hand);font-size:30px;fill:var(--ink);opacity:0;transition:opacity 1s ease 1.6s}
+.venn.in text{opacity:1}
+
+/* Contador */
+.contador{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:420px;margin:0 auto}
+.contador div{background:var(--card);border-radius:14px;padding:14px 4px 10px;text-align:center;box-shadow:0 10px 24px -18px rgba(60,40,20,.6)}
+.contador b{display:block;font:600 40px/1 var(--serif);color:var(--red);font-variant-numeric:tabular-nums}
+.contador span{font:500 14px var(--serif);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.contador .big{grid-column:span 3;padding:18px 8px 14px}
+.contador .big b{font-size:64px}
+.nota{font:500 24px var(--hand);text-align:center;color:var(--muted);margin:22px 0 0}
+
+/* Foto a pantalla completa */
+.full{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding:12svh 20px 10svh;color:#FFF8EC;overflow:hidden;text-align:center}
+.full img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;transform:scale(1.08);transition:transform 6s ease}
+.full.in img{transform:scale(1)}
+.full::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(to bottom, rgba(20,12,30,.45), transparent 35%, transparent 60%, rgba(20,10,5,.55))}
+.full p{font:700 clamp(40px,12vw,58px)/1.02 var(--hand);margin:0;text-shadow:0 2px 14px rgba(0,0,0,.35);transform:rotate(-3deg)}
+.full p.abajo{font-size:clamp(30px,9vw,42px);transform:rotate(2deg)}
+
+/* Capítulos y polaroids */
+.cap{margin:10px 0 64px}
+.cap h3{font:700 36px var(--hand);text-align:center;margin:0 0 30px;color:var(--red)}
+.cap h3::before,.cap h3::after{content:"—";color:var(--gold);margin:0 .35em;font-weight:500}
+.stack{display:flex;flex-direction:column;gap:46px}
+.stack .polaroid{width:min(80vw,340px)}
+.stack .polaroid:nth-child(odd){--r:-3deg;margin-left:max(0px, calc(50% - 190px))}
+.stack .polaroid:nth-child(even){--r:2.5deg;margin-right:max(0px, calc(50% - 190px))}
+.stack .polaroid.rv{transform:translateY(40px) rotate(0deg)}
+.stack .polaroid.rv.in{transform:rotate(var(--r))}
+.stack .polaroid.ancha{width:min(90vw,420px)}
+
+/* Primera salida */
+.ticket{display:flex;max-width:400px;margin:0 auto 26px;filter:drop-shadow(0 14px 22px rgba(60,40,20,.25));transform:rotate(-1.5deg)}
+.ticket-izq{flex:1;background:var(--card);border-radius:10px 0 0 10px;padding:18px 18px 16px;display:grid;gap:2px}
+.ticket-izq .t-k{font:500 12px var(--serif);letter-spacing:.24em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.ticket-izq .t-k:first-child{margin-top:0}
+.ticket-izq b{font:700 28px/1.05 var(--hand);color:var(--ink)}
+.ticket-der{width:74px;background:var(--red);color:#FBEDE6;border-radius:0 10px 10px 0;border-left:2px dashed var(--paper);display:grid;place-items:center;
+  font:600 13px/1.2 var(--serif);letter-spacing:.15em;text-transform:uppercase;text-align:center}
+.ticket-der span{transform:rotate(-90deg);white-space:nowrap}
+.cuento{text-align:center;margin:0 0 10px;font-size:22px}
+.cuento + .cuento{font-style:italic;color:var(--red)}
+.cancion{display:flex;align-items:center;gap:14px;max-width:420px;margin:30px auto 0;background:#2B211D;color:#F6EBDD;border-radius:16px;padding:14px 14px 14px 18px;box-shadow:0 18px 30px -18px rgba(30,15,10,.8)}
+.cancion-txt{flex:1;display:grid;line-height:1.15}
+.cancion-txt span{font:500 12px var(--serif);letter-spacing:.24em;text-transform:uppercase;color:#C9A98A}
+.cancion-txt b{font:700 30px var(--hand)}
+.cancion-txt small{font-size:15px;color:#C9B8A8}
+.cancion-btn{width:52px;height:52px;flex:none;border-radius:50%;border:0;background:var(--red);color:#fff;font-size:18px;cursor:pointer}
+.cancion-btn[hidden]{display:none}
+.eq{display:flex;align-items:flex-end;gap:3px;height:30px}
+.eq i{width:4px;height:30%;background:var(--red-soft);border-radius:2px}
+.con-musica .eq i{animation:eq 1s ease-in-out infinite alternate}
+.eq i:nth-child(2){animation-delay:.25s!important}.eq i:nth-child(3){animation-delay:.5s!important}.eq i:nth-child(4){animation-delay:.15s!important}
+@keyframes eq{from{height:20%}to{height:100%}}
+.yt{max-width:420px;margin:14px auto 0}
+.yt iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
+
+/* Cuadrícula de a dos */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px 14px;align-items:start}
+.grid2 .polaroid{width:100%;padding:7px 7px 0}
+.grid2 .polaroid figcaption{font-size:20px;padding:9px 4px 11px}
+.grid2 .polaroid.l{grid-column:span 2;width:94%;margin:0 auto}
+.grid2 .polaroid.rv{transform:translateY(30px)}
+.grid2 .polaroid.rv.in{transform:rotate(var(--r,0deg))}
+.grid2 .polaroid:nth-child(4n+1){--r:-2deg}.grid2 .polaroid:nth-child(4n+2){--r:1.8deg}
+.grid2 .polaroid:nth-child(4n+3){--r:1.2deg}.grid2 .polaroid:nth-child(4n){--r:-1.5deg}
+
+/* Ruta de la Carretera Austral */
+.intro{text-align:center;color:var(--muted);font-style:italic;margin:-8px 0 34px}
+.ruta{list-style:none;margin:0;padding:0 0 0 28px;position:relative}
+.ruta::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;border-left:3px dashed var(--red);opacity:.85}
+.parada{position:relative;margin:0 0 46px}
+.parada::before{content:"";position:absolute;left:-27px;top:7px;width:17px;height:17px;border-radius:50%;background:var(--paper);border:3px solid var(--red);box-sizing:border-box}
+.parada.fin::before{background:var(--red);box-shadow:0 0 0 5px rgba(179,32,46,.18)}
+.parada h3{font:700 32px/1.05 var(--hand);margin:0;color:var(--ink)}
+.parada .km{display:block;font:500 14px var(--serif);letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin:4px 0 16px}
+.parada .grid2{gap:18px 12px}
+.pasaporte{background:#8E2430;color:#FBEDE6;border-radius:10px;padding:26px 18px 22px;text-align:center;box-shadow:0 22px 40px -24px rgba(90,15,25,.8)}
+.pasaporte h3{font:700 32px var(--hand);margin:0 0 18px}
+.sellos{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.sellos span{display:grid;place-items:center;width:96px;height:96px;border-radius:50%;border:2.5px dashed rgba(251,237,230,.8);
+  font:600 12px/1.15 var(--serif);letter-spacing:.02em;text-align:center;text-transform:uppercase;padding:8px;transform:rotate(var(--r));opacity:0;transition:opacity .5s, transform .5s cubic-bezier(.3,1.6,.5,1)}
+.pasaporte.in .sellos span{opacity:.95}
+.pasaporte.in .sellos span:nth-child(1){transition-delay:.3s}.pasaporte.in .sellos span:nth-child(2){transition-delay:.55s}
+.pasaporte.in .sellos span:nth-child(3){transition-delay:.8s}.pasaporte.in .sellos span:nth-child(4){transition-delay:1.05s}
+.pasaporte.in .sellos span:nth-child(5){transition-delay:1.3s}.pasaporte.in .sellos span:nth-child(6){transition-delay:1.55s}
+.pasaporte .nota{color:#F6D9CF;margin-top:20px}
+.anillo .polaroid{width:min(80vw,340px)}
+
+/* Carta */
+.carta{
+  background:var(--card); border-radius:4px; padding:34px 22px 30px; position:relative;
+  box-shadow:0 1px 2px rgba(60,40,20,.1), 0 24px 46px -26px rgba(60,40,20,.55);
+  background-image:repeating-linear-gradient(to bottom, transparent 0 37px, rgba(179,32,46,.08) 37px 38px);
+}
+.carta p{font:500 26px/38px var(--hand);margin:0 0 38px}
+.carta p:last-child{margin:0}
+.carta .firma{text-align:right;font-size:32px;color:var(--red)}
+
+/* Pregunta final */
+.final{min-height:90svh;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.final h2{font-size:46px}
+.botones{display:flex;justify-content:center;gap:16px;margin-top:22px;min-height:64px;position:relative}
+.btn{font:700 26px var(--hand);border:0;border-radius:999px;padding:12px 34px;cursor:pointer;transition:transform .2s, background .2s}
+.btn:active{transform:scale(.96)}
+.si{background:var(--red);color:#FFF5F0;box-shadow:0 10px 22px -10px rgba(179,32,46,.8)}
+.no{background:transparent;color:var(--muted);border:1.5px solid #CDBBA5;transition:transform .25s ease}
+.respuesta{font:700 40px/1.2 var(--hand);color:var(--red);margin:26px 0 0;opacity:0;transform:scale(.9);transition:all .7s cubic-bezier(.2,.8,.2,1)}
+.respuesta.si-dijo{opacity:1;transform:none}
+footer{padding:30px 16px calc(40px + env(safe-area-inset-bottom));text-align:center;font:500 20px var(--hand);color:var(--muted)}
+
+/* Corazones */
+.corazon{position:fixed;top:-40px;z-index:60;pointer-events:none;color:var(--red);animation:cae linear forwards}
+@keyframes cae{to{transform:translateY(110svh) rotate(var(--rot))}}
+
+/* Visor de fotos */
+#visor{position:fixed;inset:0;z-index:70;background:rgba(25,18,14,.92);display:grid;place-items:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .35s, visibility 0s .35s}
+#visor.on{opacity:1;visibility:visible;transition:opacity .35s}
+#visor img{max-height:86svh;max-width:100%;width:auto;border-radius:3px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+#visor p{color:#F6EBDD;font:500 28px var(--hand);margin:12px 0 0;text-align:center}
+#visor button{position:absolute;top:calc(12px + env(safe-area-inset-top));right:14px;background:none;border:0;color:#fff;font-size:34px;width:48px;height:48px;cursor:pointer}
+
+/* Música */
+#musica{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:40;width:54px;height:54px;border-radius:50%;border:0;cursor:pointer;
+  background:radial-gradient(circle, var(--red) 0 22%, #1d1715 23% 30%, #2b2421 31% 38%, #1d1715 39% 46%, #2b2421 47% 54%, #1d1715 55%);
+  box-shadow:0 8px 20px -8px rgba(0,0,0,.6);display:none}
+#musica.visible{display:block}
+#musica.sonando{animation:gira 3.2s linear infinite}
+#musica::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--red);opacity:0}
+#musica.pausa::after{content:"♪";display:grid;place-items:center;opacity:1;color:var(--red);font-size:16px;inset:auto -6px -6px auto;width:22px;height:22px;background:var(--paper);border-width:1.5px}
+@keyframes gira{to{transform:rotate(360deg)}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body class="locked">
+
+<!-- Sobre de entrada: el toque inicia la música (los teléfonos no dejan reproducir sin un toque) -->
+<div id="sobre" role="dialog" aria-label="Carta para Camila">
+  <div class="sobre-box">
+    <p class="para">Para Camila</p>
+    <div class="envelope">
+      <div class="env-back"></div>
+      <div class="env-letter">te amo</div>
+      <div class="env-front"></div>
+      <div class="env-flap"></div>
+      <button class="seal" id="abrir" aria-label="Abrir la carta">♥</button>
+    </div>
+    <p class="tap">toca el sello para abrir</p>
+  </div>
+</div>
+
+<main>
+  <header class="hero wrap" id="portada">
+    <p class="kicker">Nuestros</p>
+    <h1>10 Meses <em>Contigo</em></h1>
+    <div class="fecha" id="fecha" aria-label="Fecha en que empezamos"></div>
+    <figure class="polaroid tape" data-full="fotos/luces.webp" style="--ar:1400/933">
+      <img src="fotos/luces.webp" width="1400" height="933" alt="Pablo besando la frente de Camila con las luces de la ciudad de fondo">
+      <figcaption class="nombres">Pablo <b>&amp;</b> Camila</figcaption>
+    </figure>
+    <div class="desliza">desliza<i>↓</i></div>
+  </header>
+
+  <section class="wrap leyenda">
+    <svg class="hilo rv" viewBox="0 0 180 60" aria-hidden="true"><path class="draw" pathLength="1" stroke="#B3202E" stroke-width="2.4" d="M2 40 C 30 10, 50 55, 78 30 S 110 8, 120 32 S 150 52, 178 20"/></svg>
+    <p class="it rv">Cuenta una leyenda japonesa…</p>
+    <p class="rv d1">que dos personas destinadas a encontrarse<br>están unidas por un <b style="color:var(--red);font-weight:600">hilo rojo invisible</b>.</p>
+    <p class="rv d2">Puede estirarse, enredarse<br>o perderse entre los caminos de la vida…</p>
+    <p class="fuerte rv d3">pero nunca se rompe.</p>
+  </section>
+
+  <section class="wrap">
+    <svg class="venn rv" viewBox="0 0 380 300" role="img" aria-label="Dos círculos, tú y yo, unidos por un hilo rojo">
+      <ellipse class="draw" pathLength="1" cx="140" cy="130" rx="102" ry="98" transform="rotate(-6 140 130)" stroke="#2E2420" stroke-width="3"/>
+      <ellipse class="draw" pathLength="1" cx="240" cy="128" rx="100" ry="101" transform="rotate(5 240 128)" stroke="#2E2420" stroke-width="3"/>
+      <path class="draw" pathLength="1" style="transition-delay:1.4s" stroke="#B3202E" stroke-width="3.2"
+        d="M190 214 C 186 236, 206 248, 200 266 C 196 280, 214 286, 232 274 C 246 264, 252 282, 268 284 C 286 286, 296 270, 318 276"/>
+      <circle cx="190" cy="214" r="4.5" fill="#B3202E"/>
+      <text x="92" y="140">TÚ</text>
+      <text x="180" y="140">&amp;</text>
+      <text x="262" y="140">YO</text>
+    </svg>
+  </section>
+
+  <section class="wrap">
+    <h2 class="rv"><small>Cómo empezó todo</small>Nuestra primera salida</h2>
+    <div class="ticket rv d1">
+      <div class="ticket-izq">
+        <span class="t-k">Lugar</span><b>Terraza</b>
+        <span class="t-k">Ciudad</span><b>Quillota</b>
+        <span class="t-k">Banda sonora</span><b>Reggaetón old school 🔊</b>
+      </div>
+      <div class="ticket-der" aria-hidden="true"><span>Admite<br>2</span></div>
+    </div>
+    <p class="cuento rv d2">Llegué a buscarte con el reggaetón old school a todo volumen y tú no parabas de reírte.</p>
+    <p class="cuento rv d3">No sabía que esa risa se iba a convertir en mi canción favorita.</p>
+
+    <div class="cancion rv d2">
+      <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="cancion-txt"><span>Nuestra canción</span><b>Bonita Bonita</b><small>El TonnyOS · 4AM Tapes</small></div>
+      <button id="cancion-play" class="cancion-btn" aria-label="Reproducir nuestra canción">▶</button>
+    </div>
+    <div id="yt" class="yt"></div>
+  </section>
+
+  <section class="wrap">
+    <h2 class="rv"><small>Llevamos juntos</small>cada segundo cuenta</h2>
+    <div class="contador rv d1" aria-live="off">
+      <div class="big"><b id="c-meses">0</b><span>meses</span></div>
+      <div><b id="c-dias">0</b><span>días</span></div>
+      <div><b id="c-horas">0</b><span>horas</span></div>
+      <div><b id="c-min">0</b><span>minutos</span></div>
+      <div class="big" style="padding:12px 8px"><b id="c-seg" style="font-size:44px">0</b><span>segundos (y sumando)</span></div>
+    </div>
+    <p class="nota rv d2">En total, <b id="c-total" style="color:var(--red)">0</b> días eligiéndonos.</p>
+  </section>
+
+  <div class="full rv">
+    <img src="fotos/dunas.webp" alt="Pablo y Camila abrazados en las dunas al atardecer" loading="lazy">
+    <p>Tenemos el amor<br>más bonito</p>
+    <p class="abajo">Gracias por compartir<br>tu vida conmigo</p>
+  </div>
+
+  <section class="wrap">
+    <h2 class="rv"><small>Capítulo a capítulo</small>Nuestra historia</h2>
+    <div id="caps-1"></div>
+  </section>
+
+  <div class="full rv">
+    <img src="fotos/ferry-estela.webp" alt="Estela del ferry en un fiordo de la Patagonia con un volcán al fondo" loading="lazy">
+    <p>Del kilómetro 0…</p>
+    <p class="abajo">…hasta el fin<br>del camino</p>
+  </div>
+
+  <section class="wrap">
+    <h2 class="rv"><small>Nuestro gran viaje</small>Carretera Austral</h2>
+    <p class="intro rv">Más de mil kilómetros de ripio, ferris, lluvia, volcanes y lagos turquesa. Y tú de copiloto todo el camino.</p>
+    <ol class="ruta" id="ruta"></ol>
+    <div class="pasaporte rv">
+      <h3>Sellos de nuestro pasaporte</h3>
+      <div class="sellos">
+        <span style="--r:-8deg">Pumalín</span><span style="--r:6deg">Corcovado</span><span style="--r:-4deg">Capillas de Mármol</span>
+        <span style="--r:9deg">Patagonia</span><span style="--r:-7deg">Villa O'Higgins</span><span style="--r:5deg">La Campana</span>
+      </div>
+      <p class="nota">Más de 1.200 km, y el hilo rojo nunca se cortó.</p>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div id="caps-2"></div>
+  </section>
+
+  <section class="wrap anillo">
+    <h2 class="rv"><small>Un momento que no olvido</small>Y entonces…</h2>
+    <figure class="polaroid tape rv" style="--ar:3/4;transform:rotate(1.5deg)">
+      <img src="fotos/anillo.webp" width="900" height="1200" loading="lazy" alt="Camila tapándose la cara con la mano y un anillo en el dedo, Pablo besándole la cabeza">
+      <figcaption>Tu mano, ese anillo<br>y tu sonrisa escondida 💍</figcaption>
+    </figure>
+  </section>
+
+  <div class="full rv">
+    <img src="fotos/villa-beso.webp" alt="Pablo y Camila besándose frente al letrero de Villa O'Higgins, fin de la Carretera Austral" loading="lazy">
+    <p>Eres, serás y siempre<br>serás lo mejor<br>de mi vida</p>
+    <p class="abajo">Tú y nadie más</p>
+  </div>
+
+  <section class="wrap">
+    <h2 class="rv"><small>Una carta para ti</small>Mi amor</h2>
+    <div class="carta rv d1">
+      <p>Hace 10 meses empezó lo mejor que me ha pasado. Todo partió en una terraza en Quillota, con mi reggaetón a todo volumen y tu risa de fondo. Desde ese día, todos mis planes te incluyen.</p>
+      <p>Contigo aprendí que la felicidad está en lo simple: un mate en la playa, una salida en bici, un atardecer en las dunas.</p>
+      <p>Recorrimos juntos la Carretera Austral, del kilómetro 0 hasta el final. Y en cada curva confirmé lo mismo: no importa el camino si eres tú quien va a mi lado.</p>
+      <p>Te vi convertirte en abogada y no te imaginas el orgullo que sentí. Y tú estuviste ahí cuando yo me titulé. Así quiero que sigamos: celebrando juntos cada logro y sosteniéndonos en cada caída.</p>
+      <p>Gracias por tu risa, por tu paciencia, por cuidarme y por elegirme todos los días.</p>
+      <p>Eres, serás y siempre serás lo mejor de mi vida. Tú y nadie más. No quiero otra historia que no sea la nuestra.</p>
+      <p>Quiero vivir contigo hasta que seamos dos viejitos, tomados de la mano, riéndonos de las mismas tonteras y escuchando reggaetón old school a todo volumen.</p>
+      <p class="firma">Te amo, Pablo</p>
+    </div>
+  </section>
+
+  <section class="wrap final">
+    <svg class="hilo rv" viewBox="0 0 180 60" aria-hidden="true"><path class="draw" pathLength="1" stroke="#B3202E" stroke-width="2.4" d="M2 30 C 40 0, 60 60, 90 30 C 120 0, 140 60, 178 30"/></svg>
+    <h2 class="rv">¿Seguimos escribiendo esta historia juntos?</h2>
+    <div class="botones rv d1">
+      <button class="btn si" id="si">Sí 🤍</button>
+      <button class="btn no" id="no">No</button>
+    </div>
+    <p class="respuesta" id="respuesta" aria-live="polite"></p>
+  </section>
+</main>
+
+<footer>hecho con todo mi amor · 10 meses</footer>
+
+<div id="visor" role="dialog" aria-modal="true" aria-label="Foto ampliada">
+  <button id="cerrar" aria-label="Cerrar">×</button>
+  <div><img id="visor-img" alt=""><p id="visor-txt"></p></div>
+</div>
+
+<button id="musica" aria-label="Pausar o reanudar la música"></button>
+<!-- Agrega un archivo musica.mp3 en esta misma carpeta y sonará al abrir el sobre. -->
+<audio id="audio" src="musica.mp3" loop preload="metadata"></audio>
+
+<script>
+// ====== Lo único que hay que ajustar ======
+const INICIO = "2026-01-25T00:00:00"; // fecha en que empezaron (año-mes-díaThh:mm:ss, hora de Chile)
+const YOUTUBE_ID = ""; // si no hay musica.mp3: el código del video de "Bonita Bonita" (lo que va después de v= en el link)
+// ===========================================
+
+const $ = s => document.querySelector(s);
+const inicio = new Date(INICIO);
+
+// Fecha de portada: dd · mm · aaaa, cada carácter aparece enfocándose
+(function(){
+  const p = n => String(n).padStart(2, "0");
+  const txt = `${p(inicio.getDate())}·${p(inicio.getMonth() + 1)}·${inicio.getFullYear()}`;
+  $("#fecha").innerHTML = [...txt].map((c, i) =>
+    `<span class="${c === "·" ? "dot" : ""}" style="animation-delay:${.35 + i * .12}s">${c}</span>`).join("");
+})();
+
+// Contador en vivo
+function diferencia(desde, hasta){
+  if (hasta < desde) return {meses:0, dias:0, horas:0, min:0, seg:0, total:0};
+  let meses = (hasta.getFullYear() - desde.getFullYear()) * 12 + hasta.getMonth() - desde.getMonth();
+  const ancla = m => { const d = new Date(desde); d.setMonth(desde.getMonth() + m); return d; };
+  if (ancla(meses) > hasta) meses--;
+  let ms = hasta - ancla(meses);
+  const dias = Math.floor(ms / 864e5); ms -= dias * 864e5;
+  const horas = Math.floor(ms / 36e5); ms -= horas * 36e5;
+  const min = Math.floor(ms / 6e4); ms -= min * 6e4;
+  return {meses, dias, horas, min, seg: Math.floor(ms / 1e3), total: Math.floor((hasta - desde) / 864e5)};
+}
+function tic(){
+  const d = diferencia(inicio, new Date());
+  $("#c-meses").textContent = d.meses; $("#c-dias").textContent = d.dias;
+  $("#c-horas").textContent = d.horas; $("#c-min").textContent = d.min;
+  $("#c-seg").textContent = d.seg; $("#c-total").textContent = d.total.toLocaleString("es-CL");
+}
+tic(); setInterval(tic, 1000);
+
+// Capítulos y ruta. Cada foto: [archivo, texto, forma] (p = vertical, l = horizontal)
+const AR = {p:"3/4", l:"4/3", m:"1200/828", f:"3/2"};
+const foto = ([f, t, k = "p"]) =>
+  `<figure class="polaroid rv ${k === "p" ? "" : "l"}" style="--ar:${AR[k]}"><img src="fotos/${f}.webp" loading="lazy" decoding="async" alt=""><figcaption>${t}</figcaption></figure>`;
+const capitulo = c =>
+  `<div class="cap"><h3 class="rv">${c.titulo}</h3><div class="${c.tipo === "grid" ? "grid2" : "stack"}">${c.fotos.map(foto).join("")}</div></div>`;
+
+const CAPS1 = [
+  {titulo:"lo de todos los días", tipo:"stack", fotos:[
+    ["beso","Tus besos sorpresa"],
+    ["selfie-noche","Mi lugar favorito: a tu lado"],
+    ["espejo-casa","Tú, yo y el espejo de siempre"],
+    ["playa-selfie","Domingos de playa"],
+    ["chuteadores","Riéndonos de todo, siempre"],
+    ["noche-selfie","Mirándote así, siempre"],
+    ["noche-cintas","Bajo las cintas de colores"],
+    ["mall","Hasta un café es panorama contigo"]]},
+  {titulo:"compañeros de gym", tipo:"grid", fotos:[
+    ["gym","Mi partner favorita"],["gym-espejo","Post-entreno"],
+    ["gym-trotadora","Cardio juntos (sí, juntos)"],["gym-barra","Contigo hasta pierna"]]},
+  {titulo:"nuestras aventuras", tipo:"grid", fotos:[
+    ["mate-playa","Mate, playa y tú"],["carpa-beso","Escondidos del sol"],
+    ["camping","Noches de camping","l"],
+    ["bicis","Mi copiloto favorita"],["cascada","Caminos que terminan en cascadas"],
+    ["la-campana","Pedaleando hasta La Campana","l"],
+    ["bicis-grupo","Aventuras en dos ruedas","l"],
+    ["cerro-selfie","Subiendo cerros"],["cerro-hombro","Apoyada en mí"],
+    ["cerro-frente","Arriba de todo","m"],
+    ["cerro-espaldas","Mirando el mismo horizonte","m"],
+    ["abrazo-cerro","Abrazados al sol"],["camino-abrazo","Así se camina contigo"],
+    ["picnic-beso","Picnic y dron","l"],
+    ["picnic","Tardes perfectas","l"],
+    ["picnic-abrazo","Mirando la pantalla, pensando en ti","l"],
+    ["dron","Tú, yo y el dron","l"],
+    ["cascada-beso","Un beso junto al salto"],["estatua","Así quiero que lleguemos: juntitos"],
+    ["los-angeles","Kilómetros de carretera contigo","l"]]}
+];
+const CAPS2 = [
+  {titulo:"nuestros logros", tipo:"stack", fotos:[
+    ["ingeniero","Estuviste a mi lado<br>cuando me titulé"],
+    ["titulacion","Tu gran día"],
+    ["abogada","Abogada ⚖️<br>Mi orgullo más grande"]]},
+  {titulo:"nuestras celebraciones", tipo:"grid", fotos:[
+    ["ano-nuevo","Recibiendo el año a tu lado"],["espejo-fiesta","Los más lindos de la fiesta"],
+    ["fiesta","Contigo hasta el carrete es mejor","f"],
+    ["dieciocho-beso","Dieciocho con besos"],["dieciocho","¡Viva Chile y viva tú!"],
+    ["globos-beso","Cumpleaños, globos y besos"],["globos-selfie","Celebrando la vida contigo"]]}
+];
+const RUTA = [
+  {lugar:"Puerto Montt", km:"Kilómetro 0", fotos:[
+    ["km0","Ruta 7, km 0.00:<br>aquí empezó todo"],["ferry-selfie","Rumbo al sur"],
+    ["mirador-pm","Listos para partir","m"]]},
+  {lugar:"Navegando al sur", km:"Fiordos y ferris", fotos:[
+    ["ferry-abrazo","Tu mejilla, mi lugar seguro","l"],
+    ["ferry-lentes","Viento, sol y tú"],["ferry-fiordo","Agua turquesa"]]},
+  {lugar:"Parque Pumalín", km:"Douglas Tompkins", fotos:[
+    ["pumalin","Un beso en la puerta de la Patagonia","l"],
+    ["alerce","Entre alerces milenarios"],["chaiten","Bienvenidos a Chaitén"]]},
+  {lugar:"Volcán Chaitén", km:"Fin de sendero", fotos:[
+    ["volcan","Al pie del volcán","l"],
+    ["volcan-espaldas","Mirando lo mismo, juntos","l"]]},
+  {lugar:"Atardeceres del sur", km:"Cielos de fuego", fotos:[
+    ["atardecer-beso","El atardecer más lindo","l"],
+    ["atardecer-brazos","¡Lo estamos logrando!","l"]]},
+  {lugar:"Parque Corcovado", km:"Sendero Ventisquero Yelcho", fotos:[
+    ["corcovado","Pasaporte en mano","l"],
+    ["puente-camino","En medio de la carretera, solo nosotros","l"],
+    ["puente-dron","El sur desde el cielo","l"]]},
+  {lugar:"Coyhaique", km:"Seguimos bajando", fotos:[
+    ["coyhaique","Carretera Austral"],["marmol","Capillas de Mármol: mojados y felices"]]},
+  {lugar:"Parque Nacional Patagonia", km:"Sector Tamango", fotos:[
+    ["tamango","Fuerza para el último tramo"],["villa-senalando","¡Ya casi!"],
+    ["muelle","¿Viste ese barco?","l"]]},
+  {lugar:"Villa O'Higgins", km:"Fin de la Carretera Austral", fin:true, fotos:[
+    ["villa-beso","El beso del fin del camino"],["reconocimiento","Certificado: lo hicimos juntos"],
+    ["villa-letras","I ❤ Villa O'Higgins","l"]]}
+];
+$("#caps-1").innerHTML = CAPS1.map(capitulo).join("");
+$("#caps-2").innerHTML = CAPS2.map(capitulo).join("");
+$("#ruta").innerHTML = RUTA.map(p =>
+  `<li class="parada${p.fin ? " fin" : ""}"><h3 class="rv">${p.lugar}</h3><span class="km rv">${p.km}</span><div class="grid2">${p.fotos.map(foto).join("")}</div></li>`).join("");
+
+// Revelado al deslizar
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+}), {threshold:.18, rootMargin:"0px 0px -6% 0px"});
+document.querySelectorAll(".rv").forEach(el => io.observe(el));
+
+// Música
+const audio = $("#audio"), disco = $("#musica");
+const btnCancion = $("#cancion-play");
+const hayMp3 = () => !audio.error;
+function estadoDisco(){
+  const suena = !audio.paused;
+  disco.classList.toggle("sonando", suena); disco.classList.toggle("pausa", !suena);
+  btnCancion.textContent = suena ? "❚❚" : "▶";
+  document.body.classList.toggle("con-musica", suena);
+}
+function sinMp3(){
+  disco.classList.remove("visible");
+  if (!YOUTUBE_ID) btnCancion.hidden = true;
+}
+audio.addEventListener("error", sinMp3);
+if (audio.error) sinMp3();
+audio.addEventListener("play", estadoDisco); audio.addEventListener("pause", estadoDisco);
+disco.addEventListener("click", () => audio.paused ? audio.play() : audio.pause());
+btnCancion.addEventListener("click", () => {
+  if (hayMp3()) { audio.paused ? audio.play().then(() => disco.classList.add("visible")) : audio.pause(); return; }
+  if (YOUTUBE_ID && !$("#yt iframe")) {
+    $("#yt").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&playsinline=1" title="Bonita Bonita" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+    btnCancion.hidden = true;
+  }
+});
+
+// Abrir el sobre
+$("#abrir").addEventListener("click", () => {
+  $("#sobre").classList.add("abierto");
+  if (hayMp3()){
+    audio.volume = .85;
+    audio.play().then(() => disco.classList.add("visible")).catch(() => {});
+  }
+  setTimeout(() => { document.body.classList.remove("locked"); document.body.classList.add("go"); }, 900);
+  setTimeout(() => lluvia(18), 1100);
+});
+
+// Visor de fotos
+const visor = $("#visor");
+document.addEventListener("click", e => {
+  const f = e.target.closest(".polaroid");
+  if (!f) return;
+  const img = f.querySelector("img");
+  $("#visor-img").src = f.dataset.full || img.currentSrc || img.src;
+  $("#visor-txt").innerHTML = f.querySelector("figcaption").innerHTML;
+  visor.classList.add("on");
+});
+const cerrar = () => visor.classList.remove("on");
+visor.addEventListener("click", e => { if (e.target === visor || e.target.id === "cerrar") cerrar(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") cerrar(); });
+
+// Corazones
+function lluvia(n){
+  for (let i = 0; i < n; i++){
+    const h = document.createElement("span");
+    h.className = "corazon"; h.textContent = Math.random() < .75 ? "❤" : "🤍";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = 14 + Math.random() * 22 + "px";
+    h.style.setProperty("--rot", (Math.random() * 360 - 180) + "deg");
+    h.style.animationDuration = 3 + Math.random() * 3 + "s";
+    h.style.animationDelay = Math.random() * 1.5 + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 8000);
+  }
+}
+
+// Pregunta final: el "No" se escapa
+const no = $("#no");
+let escapes = 0;
+const frasesNo = ["¿Segura?", "Piénsalo bien 🥺", "Esa no es una opción", "Nop", "Inténtalo otra vez 😌"];
+function escapar(e){
+  e.preventDefault();
+  const x = (Math.random() * 2 - 1) * Math.min(130, innerWidth / 2 - 70);
+  const y = (Math.random() * 2 - 1) * 70;
+  no.style.transform = `translate(${x}px, ${y}px)`;
+  no.textContent = frasesNo[escapes++ % frasesNo.length];
+}
+no.addEventListener("pointerdown", escapar);
+no.addEventListener("click", escapar);
+$("#si").addEventListener("click", () => {
+  no.style.display = "none";
+  const r = $("#respuesta");
+  r.innerHTML = "Sabía que dirías que sí 🤍<br>Te amo, Camila.";
+  r.classList.add("si-dijo");
+  lluvia(60);
+});
+</script>
+</body>
+</html>

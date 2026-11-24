@@ -1,5 +1,5 @@
 // PV GYM: funciona sin conexión guardando la app en caché.
-const CACHE = "pv-gym-v1";
+const CACHE = "pv-gym-v2";
 const CORE = ["./", "index.html", "manifest.webmanifest",
   "icon-192.png", "icon-512.png", "maskable-512.png", "favicon-32.png"];
 self.addEventListener("install", e => {
@@ -12,6 +12,10 @@ self.addEventListener("activate", e => {
 self.addEventListener("fetch", e => {
   if (e.request.method !== "GET") return;
   const url = new URL(e.request.url);
+  // Otras páginas del sitio (p. ej. /10-meses/) no son parte de la app: no se tocan ni se guardan.
+  const base = new URL("./", self.registration.scope).pathname;
+  const enSubcarpeta = url.origin === location.origin && url.pathname.slice(base.length).includes("/");
+  if (enSubcarpeta) return;
   // Página principal: primero la red (para recibir actualizaciones), si no hay señal, la copia guardada.
   if (e.request.mode === "navigate") {
     e.respondWith(fetch(e.request).then(r => { caches.open(CACHE).then(c => c.put("index.html", r.clone())); return r; })
