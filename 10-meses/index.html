@@ -444,7 +444,7 @@ footer{padding:30px 16px calc(40px + env(safe-area-inset-bottom));text-align:cen
 <script>
 // ====== Lo único que hay que ajustar ======
 const INICIO = "2026-01-25T00:00:00"; // fecha en que empezaron (año-mes-díaThh:mm:ss, hora de Chile)
-const YOUTUBE_ID = ""; // si no hay musica.mp3: el código del video de "Bonita Bonita" (lo que va después de v= en el link)
+const YOUTUBE_ID = "zv1bDligPJQ"; // "Bonita Bonita" en YouTube; se usa si no hay musica.mp3 en la carpeta
 // ===========================================
 
 const $ = s => document.querySelector(s);
@@ -586,11 +586,16 @@ audio.addEventListener("play", estadoDisco); audio.addEventListener("pause", est
 disco.addEventListener("click", () => audio.paused ? audio.play() : audio.pause());
 btnCancion.addEventListener("click", () => {
   if (hayMp3()) { audio.paused ? audio.play().then(() => disco.classList.add("visible")) : audio.pause(); return; }
-  if (YOUTUBE_ID && !$("#yt iframe")) {
-    $("#yt").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&playsinline=1" title="Bonita Bonita" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-    btnCancion.hidden = true;
-  }
+  cargarYouTube();
 });
+// Reproductor de YouTube visible en la tarjeta de "Nuestra canción".
+// Si el teléfono deja que parta solo, suena desde que se abre el sobre; si no, ella le da play ahí.
+function cargarYouTube(){
+  if (!YOUTUBE_ID || $("#yt iframe")) return;
+  $("#yt").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${YOUTUBE_ID}?autoplay=1&playsinline=1&rel=0" title="Bonita Bonita" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  btnCancion.hidden = true;
+  document.body.classList.add("con-musica");
+}
 
 // Abrir el sobre
 $("#abrir").addEventListener("click", () => {
@@ -598,6 +603,8 @@ $("#abrir").addEventListener("click", () => {
   if (hayMp3()){
     audio.volume = .85;
     audio.play().then(() => disco.classList.add("visible")).catch(() => {});
+  } else {
+    cargarYouTube();
   }
   setTimeout(() => { document.body.classList.remove("locked"); document.body.classList.add("go"); }, 900);
   setTimeout(() => lluvia(18), 1100);
