@@ -192,6 +192,10 @@ h2 small{display:block;font:500 15px var(--serif);letter-spacing:.3em;text-trans
 .yt{max-width:420px;margin:14px auto 0}
 .yt iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px}
 
+/* Pololeo */
+.pololeo{margin-top:26px}
+.pololeo .polaroid figcaption{font-size:21px}
+
 /* Cuadrícula de a dos */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px 14px;align-items:start}
 .grid2 .polaroid{width:100%;padding:7px 7px 0}
@@ -344,6 +348,16 @@ footer{padding:30px 16px calc(40px + env(safe-area-inset-bottom));text-align:cen
   </section>
 
   <section class="wrap">
+    <h2 class="rv"><small>El día que todo se hizo oficial</small>Te pedí pololeo</h2>
+    <p class="cuento rv d1">En la playa, con un mate en la mano y una carpa naranja de testigo, te pregunté si querías ser mi polola.</p>
+    <p class="cuento rv d2">Y dijiste que sí 🤍</p>
+    <div class="grid2 pololeo">
+      <figure class="polaroid tape rv" style="--ar:3/4"><img src="fotos/mate-playa.webp" loading="lazy" decoding="async" alt="Pablo y Camila brindando con mate en la playa, vistos desde la carpa naranja"><figcaption>Mate, playa y la pregunta más importante</figcaption></figure>
+      <figure class="polaroid tape rv" style="--ar:3/4"><img src="fotos/carpa-beso.webp" loading="lazy" decoding="async" alt="Camila besando a Pablo dentro de la carpa naranja"><figcaption>Recién pololos 🥹</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="wrap">
     <h2 class="rv"><small>Llevamos juntos</small>cada segundo cuenta</h2>
     <div class="contador rv d1" aria-live="off">
       <div class="big"><b id="c-meses">0</b><span>meses</span></div>
@@ -489,7 +503,6 @@ const CAPS1 = [
     ["gym","Mi partner favorita"],["gym-espejo","Post-entreno"],
     ["gym-trotadora","Cardio juntos (sí, juntos)"],["gym-barra","Contigo hasta pierna"]]},
   {titulo:"nuestras aventuras", tipo:"grid", fotos:[
-    ["mate-playa","Mate, playa y tú"],["carpa-beso","Escondidos del sol"],
     ["camping","Noches de camping","l"],
     ["bicis","Mi copiloto favorita"],["cascada","Caminos que terminan en cascadas"],
     ["la-campana","Pedaleando hasta La Campana","l"],
