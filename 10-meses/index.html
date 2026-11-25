@@ -430,12 +430,12 @@ footer{padding:30px 16px calc(40px + env(safe-area-inset-bottom));text-align:cen
 
 <button id="musica" aria-label="Pausar o reanudar la música"></button>
 <!-- Agrega un archivo musica.mp3 en esta misma carpeta y sonará al abrir el sobre. -->
-<audio id="audio" src="musica.mp3" loop preload="metadata"></audio>
+<audio id="audio" src="musica.mp3" loop preload="auto"></audio>
 
 <script>
 // ====== Lo único que hay que ajustar ======
 const INICIO = "2026-01-25T00:00:00"; // fecha en que empezaron (año-mes-díaThh:mm:ss, hora de Chile)
-const YOUTUBE_ID = "zv1bDligPJQ"; // "Bonita Bonita" en YouTube; se usa si no hay musica.mp3 en la carpeta
+const YOUTUBE_ID = ""; // la canción va en musica.mp3 (sin anuncios); YouTube queda solo como respaldo opcional
 // ===========================================
 
 const $ = s => document.querySelector(s);
